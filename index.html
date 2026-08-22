@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="ckb">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ڕۆتینەکانی ژیان - بەرەو خەونەکان</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #0f0e13;
+            background-image: 
+                radial-gradient(ellipse at 20% 50%, rgba(72, 49, 212, 0.15) 0%, transparent 60%),
+                radial-gradient(ellipse at 80% 20%, rgba(120, 80, 220, 0.1) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 100%, rgba(40, 20, 120, 0.2) 0%, transparent 50%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 580px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 40px;
+            padding: 30px 24px 40px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 
+                0 40px 80px rgba(0, 0, 0, 0.5),
+                inset 0 1px 0 rgba(255, 255, 255, 0.05);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .container::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 30% 20%, rgba(120, 80, 255, 0.03), transparent 60%);
+            pointer-events: none;
+        }
+
+        /* Glow orbs */
+        .glow-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            pointer-events: none;
+        }
+
+        .glow-orb-1 {
+            width: 200px;
+            height: 200px;
+            top: -60px;
+            right: -60px;
+            background: rgba(120, 80, 255, 0.15);
+        }
+
+        .glow-orb-2 {
+            width: 150px;
+            height: 150px;
+            bottom: -40px;
+            left: -40px;
+            background: rgba(255, 100, 150, 0.1);
+        }
+
+        h1 {
+            font-size: 30px;
+            text-align: center;
+            color: #ffffff;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            margin-bottom: 4px;
+            position: relative;
+            z-index: 1;
+        }
+
+        h1 .highlight {
+            background: linear-gradient(135deg, #a78bfa, #818cf8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subhead {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 13px;
+            font-weight: 400;
+            margin-bottom: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding-bottom: 14px;
+            letter-spacing: 0.3px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Prayer Times - Modern */
+        .prayer-time {
+            background: rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(10px);
+            padding: 12px 16px;
+            border-radius: 20px;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 24px;
+            font-size: 13px;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 4px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .prayer-time span {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 4px 12px;
+            border-radius: 40px;
+            font-size: 12px;
+            line-height: 26px;
+            color: rgba(255, 255, 255, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+        }
+
+        .prayer-time span strong {
+            color: #fff;
+            font-weight: 500;
+        }
+
+        /* Progress - Modern */
+        .progress-wrap {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 40px;
+            height: 4px;
+            margin: 20px 0 16px;
+            overflow: hidden;
+            position: relative;
+            z-index: 1;
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #a78bfa, #818cf8, #6366f1);
+            border-radius: 40px;
+            transition: width 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 0 20px rgba(120, 80, 255, 0.3);
+        }
+
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.25);
+            margin-top: 6px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Task Card - Modern */
+        .task-card {
+            background: rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(10px);
+            border-radius: 24px;
+            padding: 20px 22px;
+            margin-bottom: 14px;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+            position: relative;
+            z-index: 1;
+            backdrop-filter: blur(10px);
+        }
+
+        .task-card:hover {
+            background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(255, 255, 255, 0.08);
+            transform: translateY(-1px);
+        }
+
+        .task-card.done {
+            opacity: 0.4;
+            border-color: rgba(120, 80, 255, 0.15);
+            background: rgba(255, 255, 255, 0.02);
+            transform: scale(0.98);
+        }
+
+        .task-card.done .task-text {
+            text-decoration: line-through;
+            color: rgba(255, 255, 255, 0.2);
+        }
+
+        .task-text {
+            font-size: 17px;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.85);
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            flex: 1;
+        }
+
+        .task-emoji {
+            font-size: 24px;
+            filter: drop-shadow(0 0 10px rgba(120, 80, 255, 0.1));
+        }
+
+        .task-actions {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        /* Buttons - Modern */
+        .btn {
+            border: none;
+            padding: 8px 18px;
+            border-radius: 40px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-family: inherit;
+            letter-spacing: 0.2px;
+        }
+
+        .btn-primary {
+            background: rgba(255, 255, 255, 0.06);
+            color: rgba(255, 255, 255, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+        }
+
+        .btn-primary:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            transform: scale(1.02);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, rgba(120, 80, 255, 0.3), rgba(99, 102, 241, 0.3));
+            color: #a78bfa;
+            border: 1px solid rgba(120, 80, 255, 0.15);
+        }
+
+        .btn-success:hover {
+            background: linear-gradient(135deg, rgba(120, 80, 255, 0.5), rgba(99, 102, 241, 0.5));
+            transform: scale(1.05);
+            box-shadow: 0 0 30px rgba(120, 80, 255, 0.15);
+        }
+
+        .btn-danger {
+            background: rgba(255, 80, 80, 0.1);
+            color: rgba(255, 150, 150, 0.6);
+            border: 1px solid rgba(255, 80, 80, 0.05);
+        }
+
+        .btn-danger:hover {
+            background: rgba(255, 80, 80, 0.2);
+            color: #ff6b6b;
+            transform: scale(1.02);
+        }
+
+        .btn:disabled {
+            opacity: 0.2;
+            pointer-events: none;
+        }
+
+        .empty-message {
+            text-align: center;
+            padding: 40px 10px;
+            color: rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 40px;
+            font-size: 18px;
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+        }
+
+        .empty-message span {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.15);
+        }
+
+        /* Footer - Modern */
+        .footer {
+            margin-top: 32px;
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.04);
+            padding-top: 22px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .footer .dream-text {
+            font-size: 20px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #a78bfa, #818cf8, #6366f1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 8px;
+            letter-spacing: -0.3px;
+        }
+
+        .footer .reminder {
+            font-size: 15px;
+            color: rgba(255, 255, 255, 0.4);
+            font-weight: 400;
+        }
+
+        .footer .strong {
+            font-size: 17px;
+            color: rgba(255, 255, 255, 0.6);
+            font-weight: 600;
+            margin-top: 4px;
+        }
+
+        .footer .credit {
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.12);
+            margin-top: 14px;
+            letter-spacing: 0.5px;
+            font-weight: 300;
+        }
+
+        /* Toast - Modern */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(20px);
+            background: rgba(20, 18, 30, 0.95);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            color: #fff;
+            padding: 20px 32px;
+            border-radius: 30px;
+            font-size: 18px;
+            font-weight: 500;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.04);
+            z-index: 999;
+            opacity: 0;
+            transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+            pointer-events: none;
+            text-align: center;
+            max-width: 90%;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .toast .dhikr-ar {
+            font-size: 24px;
+            margin-bottom: 2px;
+            background: linear-gradient(135deg, #a78bfa, #818cf8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 700;
+        }
+
+        .toast .dhikr-ku {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.4);
+            font-weight: 400;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(120, 80, 255, 0.3);
+            border-radius: 10px;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .task-card {
+            animation: fadeInUp 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 20px 16px 32px;
+                border-radius: 28px;
+            }
+
+            .task-card {
+                padding: 16px 18px;
+                border-radius: 20px;
+            }
+
+            .task-text {
+                font-size: 15px;
+            }
+
+            .task-emoji {
+                font-size: 20px;
+            }
+
+            .btn {
+                padding: 6px 14px;
+                font-size: 12px;
+            }
+
+            .prayer-time span {
+                font-size: 10px;
+                padding: 2px 10px;
+                line-height: 22px;
+            }
+
+            .footer .dream-text {
+                font-size: 17px;
+            }
+
+            .toast {
+                padding: 16px 24px;
+                border-radius: 24px;
+                bottom: 20px;
+            }
+
+            .toast .dhikr-ar {
+                font-size: 20px;
+            }
+
+            .toast .dhikr-ku {
+                font-size: 13px;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .prayer-time {
+                font-size: 11px;
+                padding: 10px 12px;
+                gap: 2px;
+            }
+
+            .prayer-time span {
+                font-size: 9px;
+                padding: 2px 8px;
+            }
+
+            .task-actions .btn {
+                font-size: 11px;
+                padding: 5px 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Toast message for Dhikr -->
+<div class="toast" id="dhikrToast">
+    <div class="dhikr-ar" id="dhikrArabic">سُبْحَانَ اللَّهِ</div>
+    <div class="dhikr-ku" id="dhikrKurdish">پاکی بۆ خوا</div>
+</div>
+
+<div class="container">
+    <!-- Glow Orbs -->
+    <div class="glow-orb glow-orb-1"></div>
+    <div class="glow-orb glow-orb-2"></div>
+
+    <h1>🌙 <span class="highlight">ڕۆتینەکانی ژیان</span></h1>
+    <div class="subhead">دانە بە دانە · بەرەو خەونەکان</div>
+
+    <!-- کاتی نوێژ بە شێوەی خۆکار -->
+    <div class="prayer-time" id="prayerTimes">
+        <span>☀️ بەیانی: <strong id="fajrTime">--:--</strong></span>
+        <span>🌤 نیوەڕۆ: <strong id="dhuhrTime">--:--</strong></span>
+        <span>🌇 عەسر: <strong id="asrTime">--:--</strong></span>
+        <span>🌆 مەغریب: <strong id="maghribTime">--:--</strong></span>
+        <span>🌙 عیشا: <strong id="ishaTime">--:--</strong></span>
+    </div>
+
+    <!-- پڕۆگرێس -->
+    <div class="progress-wrap">
+        <div class="progress-fill" id="progressFill" style="width:0%"></div>
+    </div>
+    <div class="progress-label">
+        <span>پڕۆگرێس</span>
+        <span id="progressText">٠٪</span>
+    </div>
+
+    <!-- لیستی ئەرکەکان -->
+    <div id="taskList"></div>
+
+    <div class="footer">
+        <div class="dream-text">✨ من ژیان دەکەم بۆ بە دەستهێنانی خەونەکانم ✨</div>
+        <div class="reminder">💊 چارەسەرەکانم لە بیر ناکەم</div>
+        <div class="strong">💪 تۆ بەهێزیت!</div>
+        <div class="credit">run by Muhamad Surchi</div>
+    </div>
+</div>
+
+<script>
+    (function() {
+        // ---------- زکرەکان (Dhikr) ----------
+        const DHIKR_LIST = [
+            { ar: 'سُبْحَانَ اللَّهِ', ku: 'پاکی بۆ خوا' },
+            { ar: 'الْحَمْدُ لِلَّهِ', ku: 'سوپاس بۆ خوا' },
+            { ar: 'لَا إِلَهَ إِلَّا اللَّهُ', ku: 'خوا نییە بێجگە لە خوا' },
+            { ar: 'اللَّهُ أَكْبَرُ', ku: 'خوا گەورەترە' },
+            { ar: 'لَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِاللَّهِ', ku: 'هیچ هێز و توانایەک نییە بێ خوا' },
+            { ar: 'سُبْحَانَ اللَّهِ وَبِحَمْدِهِ', ku: 'پاکی بۆ خوا و سوپاس بۆی' },
+            { ar: 'أَسْتَغْفِرُ اللَّهَ', ku: 'داواکاری لێبوردنی خوا دەکەم' },
+            { ar: 'لَا إِلَهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ', ku: 'خوا نییە بێجگە لە خوا، تاکە و هاوبەشی نییە' },
+            { ar: 'سُبْحَانَ اللَّهِ الْعَظِيمِ', ku: 'پاکی بۆ خوای گەورە' },
+            { ar: 'اللَّهُمَّ صَلِّ عَلَى مُحَمَّدٍ', ku: 'خوایە سەلامت بۆ محەممەد' }
+        ];
+
+        let lastDhikrIndex = -1;
+
+        function getRandomDhikr() {
+            let index;
+            do {
+                index = Math.floor(Math.random() * DHIKR_LIST.length);
+            } while (index === lastDhikrIndex && DHIKR_LIST.length > 1);
+            lastDhikrIndex = index;
+            return DHIKR_LIST[index];
+        }
+
+        function showDhikrToast() {
+            const dhikr = getRandomDhikr();
+            const toast = document.getElementById('dhikrToast');
+            document.getElementById('dhikrArabic').textContent = dhikr.ar;
+            document.getElementById('dhikrKurdish').textContent = dhikr.ku;
+
+            toast.classList.add('show');
+            clearTimeout(toast._timeout);
+            toast._timeout = setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // ---------- پێناسەی ئەرکەکان ----------
+        const TASKS = [
+            { id: 'wake', emoji: '🌞', label: 'بەیانی باش! زەردەخەنە بکە', group: 'بەیانی' },
+            { id: 'shower1', emoji: '🚿', label: 'خۆشوشتن', group: 'بەیانی' },
+            { id: 'brush1', emoji: '🪥', label: 'ددان شۆردن', group: 'بەیانی' },
+            { id: 'water1', emoji: '💧', label: 'یەک گڵاس ئاو', group: 'بەیانی' },
+            { id: 'bed', emoji: '🛏️', label: 'جێخەو ڕێکخستن', group: 'بەیانی' },
+            { id: 'fajr', emoji: '🕌', label: 'نوێژی بەیانی', group: 'بەیانی' },
+            { id: 'breakfast', emoji: '🍳', label: 'نانی بەیانی', group: 'بەیانی' },
+            { id: 'pill1', emoji: '💊', label: 'حەبەکانی بەیانی', group: 'بەیانی' },
+            { id: 'book1', emoji: '📖', label: 'کتێب — ١٠–٢٠ خولەک', group: 'بەیانی' },
+            { id: 'sport', emoji: '🏃', label: 'وەرزش — ٢٠–٣٠ خولەک', group: 'بەیانی' },
+            { id: 'cleanup', emoji: '🚿', label: 'پاکبوونەوە و ئامادەبوون', group: 'بەیانی' },
+
+            { id: 'dhuhr', emoji: '🕌', label: 'نوێژی نیوەڕۆ', group: 'نیوەڕۆ' },
+            { id: 'lunch', emoji: '🍛', label: 'نانی نیوەڕۆ', group: 'نیوەڕۆ' },
+            { id: 'water2', emoji: '💧', label: 'یەک گڵاس ئاو', group: 'نیوەڕۆ' },
+            { id: 'walk', emoji: '🚶', label: '١٠–١٥ خولەک پیاسە', group: 'نیوەڕۆ' },
+            { id: 'work', emoji: '🎯', label: 'کار/خوێندن — ٢٥ خولەک', group: 'نیوەڕۆ' },
+
+            { id: 'asr', emoji: '🕌', label: 'نوێژی عەسر', group: 'دوای نیوەڕۆ' },
+            { id: 'study', emoji: '📚', label: 'فێربوون — ٣٠ خولەک', group: 'دوای نیوەڕۆ' },
+            { id: 'tidy', emoji: '🧹', label: 'ڕێکخستنی ژوور — ١٠ خولەک', group: 'دوای نیوەڕۆ' },
+
+            { id: 'maghrib', emoji: '🕌', label: 'نوێژی مەغریب', group: 'ئێوارە' },
+            { id: 'dinner', emoji: '🍽️', label: 'نانی ئێوارە', group: 'ئێوارە' },
+            { id: 'water3', emoji: '💧', label: 'ئاو', group: 'ئێوارە' },
+            { id: 'family', emoji: '👨‍👩‍👦', label: 'کاتی خێزان / ئارامگرتن', group: 'ئێوارە' },
+
+            { id: 'isha', emoji: '🕌', label: 'نوێژی عیشا', group: 'شەو' },
+            { id: 'pill2', emoji: '💊', label: 'حەبەکانی شەو', group: 'شەو' },
+            { id: 'brush2', emoji: '🪥', label: 'ددان شۆردن', group: 'شەو' },
+            { id: 'book2', emoji: '📖', label: '١٠ خولەک کتێب', group: 'شەو' },
+            { id: 'phoneoff', emoji: '📱', label: 'مۆبایل دابخە', group: 'شەو' },
+            { id: 'eval', emoji: '📝', label: 'هەڵسەنگاندنی ڕۆژ (⭐)', group: 'شەو' },
+            { id: 'plan', emoji: '🎯', label: 'ئامادەکردنی سبەی', group: 'شەو' },
+            { id: 'sleep', emoji: '😴', label: 'کاتی خەوتن', group: 'شەو' }
+        ];
+
+        // ---------- بارگیری لە local storage ----------
+        let completed = new Set();
+        const STORAGE_KEY = 'dayflow_completed';
+
+        function loadState() {
+            try {
+                const raw = localStorage.getItem(STORAGE_KEY);
+                if (raw) {
+                    const arr = JSON.parse(raw);
+                    if (Array.isArray(arr)) {
+                        completed = new Set(arr);
+                        return;
+                    }
+                }
+            } catch (_) {}
+            completed = new Set();
+        }
+
+        function saveState() {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify([...completed]));
+        }
+
+        // ---------- کاتی نوێژ (هەولێر) ----------
+        function getPrayerTimes() {
+            const now = new Date();
+            const day = now.getDate();
+            const lat = 36.1911;
+            const lng = 44.0092;
+            const tz = 3;
+
+            function calcTime(angle) {
+                const decl = 23.44 * Math.sin((360/365) * (284 + day) * Math.PI/180);
+                const latRad = lat * Math.PI/180;
+                const decRad = decl * Math.PI/180;
+                const cosHour = (Math.sin(angle * Math.PI/180) - Math.sin(latRad) * Math.sin(decRad)) / (Math.cos(latRad) * Math.cos(decRad));
+                let hourAngle = Math.acos(Math.min(1, Math.max(-1, cosHour))) * 180/Math.PI;
+                const solarNoon = 12 + (lng - 15*tz) / 15;
+                return solarNoon - hourAngle/15;
+            }
+
+            function formatTime(dec) {
+                const h = Math.floor(dec);
+                const m = Math.round((dec - h) * 60);
+                return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}`;
+            }
+
+            const fajr = calcTime(-18);
+            const dhuhr = 12 + (lng - 15*tz) / 15;
+            const asr = calcTime(4.5);
+            const maghrib = calcTime(-0.833);
+            const isha = calcTime(-17.5);
+
+            return {
+                fajr: formatTime(fajr),
+                dhuhr: formatTime(dhuhr + 0.1),
+                asr: formatTime(asr + 0.15),
+                maghrib: formatTime(maghrib + 0.1),
+                isha: formatTime(isha + 0.2)
+            };
+        }
+
+        function updatePrayerTimes() {
+            const t = getPrayerTimes();
+            document.getElementById('fajrTime').textContent = t.fajr;
+            document.getElementById('dhuhrTime').textContent = t.dhuhr;
+            document.getElementById('asrTime').textContent = t.asr;
+            document.getElementById('maghribTime').textContent = t.maghrib;
+            document.getElementById('ishaTime').textContent = t.isha;
+        }
+
+        // ---------- ڕێنەری لیست ----------
+        function renderTasks() {
+            const container = document.getElementById('taskList');
+            const doneCount = completed.size;
+            const total = TASKS.length;
+            const percent = Math.round((doneCount/total)*100);
+            document.getElementById('progressFill').style.width = `${percent}%`;
+            document.getElementById('progressText').textContent = `${percent}٪`;
+
+            const remaining = TASKS.filter(t => !completed.has(t.id));
+
+            if (remaining.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-message">
+                        🎉 هەموو ئەرکەکان تەواو بوون!<br>
+                        <span>ئەمڕۆ زۆر باش بووی، بەردەوام بە!</span>
+                    </div>
+                `;
+                return;
+            }
+
+            const current = remaining[0];
+
+            const card = document.createElement('div');
+            card.className = 'task-card';
+
+            const textSpan = document.createElement('span');
+            textSpan.className = 'task-text';
+            textSpan.innerHTML = `<span class="task-emoji">${current.emoji}</span> ${current.label}`;
+
+            const actions = document.createElement('div');
+            actions.className = 'task-actions';
+
+            const doneBtn = document.createElement('button');
+            doneBtn.className = 'btn btn-success';
+            doneBtn.innerHTML = '✓ کردم';
+            doneBtn.addEventListener('click', function() {
+                completed.add(current.id);
+                saveState();
+                renderTasks();
+                showDhikrToast();
+            });
+
+            const skipBtn = document.createElement('button');
+            skipBtn.className = 'btn btn-danger';
+            skipBtn.innerHTML = '✗ نەمکرد';
+            skipBtn.addEventListener('click', function() {
+                if (confirm('ئایا دڵنیای لە پەرێشانی ئەم ئەرکە؟ (نەکردن)')) {
+                    alert('ئەم ئەرکە تەواو نەکرا، بەردەوام بە لە ئەرکی دواتر (پەرێشان)');
+                }
+            });
+
+            const startBtn = document.createElement('button');
+            startBtn.className = 'btn btn-primary';
+            startBtn.innerHTML = '▶️ دەستم پێکرد';
+            startBtn.addEventListener('click', function() {
+                alert('باشە! دەستت پێکرد. ئێستا تەواوی بکە کە تەواو بوو.');
+            });
+
+            actions.appendChild(doneBtn);
+            actions.appendChild(skipBtn);
+            if (['book1','sport','walk','work','study','tidy','book2','eval','plan'].includes(current.id)) {
+                actions.appendChild(startBtn);
+            }
+
+            card.appendChild(textSpan);
+            card.appendChild(actions);
+            container.appendChild(card);
+        }
+
+        // ---------- دەستپێکردن ----------
+        function init() {
+            loadState();
+            updatePrayerTimes();
+            renderTasks();
+            setInterval(() => {
+                updatePrayerTimes();
+            }, 60000);
+        }
+
+        init();
+    })();
+</script>
+</body>
+</html>
